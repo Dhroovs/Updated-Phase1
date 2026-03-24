@@ -9,7 +9,7 @@ class AuthMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!session()->has('user_id')) {
+        if (!session('user_id')) {
             return redirect('/login');
         }
 

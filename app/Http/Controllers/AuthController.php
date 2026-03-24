@@ -34,12 +34,12 @@ class AuthController extends Controller
     }
 
     public function showLogin()
-    {
-        if (Auth::check()) {
-            return redirect()->route('dashboard');
-        }
-        return view('auth.login');
+{
+    if (session('user_id')) {
+        return redirect('/dashboard');
     }
+    return view('auth.login');
+}
 
     public function login(Request $request)
 {
@@ -61,15 +61,10 @@ class AuthController extends Controller
 }
 
     public function logout(Request $request)
-    {
-        Auth::logout();
-
-        // Invalidate session
-        $request->session()->invalidate();
-
-        // Regenerate CSRF token
-        $request->session()->regenerateToken();
-
-        return redirect('/login');
-    }
+{
+    $request->session()->flush();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/login');
+}
 }
